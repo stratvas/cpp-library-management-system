@@ -81,16 +81,14 @@ class BookNode{
     //Ορισμος και δομιση της borrowCopy
     bool borrowCopy(int copyID) {
         CopyNode* current = copiesHead;
-        while (current!=nullptr) {
-            if  ((current->copyID==copyID) && (current->status=="available")) {
+        while (current != nullptr) {
+            if (current->copyID == copyID && current->status == "available") {
                 current->status = "borrowed";
                 return true;
-            }
-            else {
-                return false;
             };
-            current=current->next;
+            current = current->next;
         };
+        return false;
     };
     //Ορισμος και δομιση της countAvailable
     int countAvailable(){
@@ -180,9 +178,9 @@ class Library {
     };
     void printAll() {
         BookNode* current = booksHead;
+        cout << "Τίτλος | Συγγραφέας | ISBN | Διαθέσιμα Αντίτυπα | Συνολικά Αντίτυπα " << endl;
+        cout << "---------------------------------------------------" << endl;  
         while (current!=nullptr) {
-            cout << "Τίτλος | Συγγραφέας | ISBN | Διαθέσιμα Αντίτυπα | Συνολικά Αντίτυπα " << endl;
-            cout << "---------------------------------------------------" << endl;
             cout <<current->title<<" | "<<current->author<<" | "<<current->ISBN<<" | "<<current->countAvailable()<<" | "<<current->countCopies()<<endl;
             current=current->next;
         };
@@ -262,10 +260,9 @@ int main() {
         cin >> menu_choice;
         cin.ignore();
         switch (menu_choice){
-            case  1:
-                BookNode* temp;
-                string ans;
-                if (temp!=nullptr) {
+            case  1:                
+            string ans;
+                if (bookLibrary.booksHead != nullptr) {
                     cout<<"Υπάρχει ήδη μία βιλιοθήκη φορτωμένη, θέλετε να φορτώσετε μία καινούρια; (Τα αρχεία της παλαιάς βιβλιοθήκης θα χαθούν.[ΝΑΙ]/[ΟΧΙ])\n";
                     getline(cin,ans);
                 };
