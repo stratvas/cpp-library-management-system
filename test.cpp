@@ -3,22 +3,19 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
 using namespace std;
 
 class CopyNode{
-public:
+    public:
+        int copyID;
+        string status;
+        CopyNode* next;
 
-int copyID;
-string status;
-CopyNode* next;
-
-CopyNode( int c, string st){
-    copyID= c;
-    status= st;
-    next = nullptr;
-}
-
+    CopyNode( int c, string st){
+        copyID= c;
+        status= st;
+        next = nullptr;
+    };
 };
 
 class BookNode{
@@ -93,34 +90,31 @@ return tokens;
 
 
 class Library {
-public:
+    public:
+        BookNode* booksHead; //pointer για την αρχη της LOB
 
-BookNode* head; //pointer για την αρχη της LOB
-
-Library(){    
-    head = nullptr;
-}
-
-
-~Library(){
-    BookNode* current = head;
-    while(current !=nullptr){
-        BookNode* nextBook = current->next; //πιανουμε το επομενο βιβλιο
-        delete current; //διαγραφουμε το τωρινο που εχουμε
-        current = nextBook; //το τωρινο που εχουμε ειναι πλεον το επομενο που κρατησαμε πριν την διαγραφη του προηγουμενου τωρινου
+    Library(){    
+        booksHead = nullptr;
+    };
+    ~Library(){
+        BookNode* current = booksHead;
+        while(current !=nullptr){
+            BookNode* nextBook = current->next; //πιανουμε το επομενο βιβλιο
+            delete current; //διαγραφουμε το τωρινο που εχουμε
+            current = nextBook; //το τωρινο που εχουμε ειναι πλεον το επομενο που κρατησαμε πριν την διαγραφη του προηγουμενου τωρινου
+        }
     }
-}
 
 
 BookNode* addBook(string title, string author, string isbn) {
 
     BookNode* newNode = new BookNode (isbn, title, author);
-    if ((head == nullptr) || (isbn < head->ISBN)) { //αν η λιστα ειναι αδεια ή το πρωτο id ειναι μεγαλυτερο απο αυτο του newNode
+    if ((booksHead == nullptr) || (isbn < booksHead->ISBN)) { //αν η λιστα ειναι αδεια ή το πρωτο id ειναι μεγαλυτερο απο αυτο του newNode
     
-    newNode->next = head; //το new copy παιρνει την πρωτη διευθυνση
-    head = newNode;
+    newNode->next = booksHead; //το new copy παιρνει την πρωτη διευθυνση
+    booksHead = newNode;
 } else {
-    BookNode* current = head;
+    BookNode* current = booksHead;
     while((current->next != nullptr) && (current->next->ISBN<isbn)){
         current = current->next;
     }
@@ -128,8 +122,32 @@ BookNode* addBook(string title, string author, string isbn) {
     current->next = newNode;
 }
 return newNode;
-
 }
+
+BookNode* findBook(string given_isbn) {
+    BookNode* current = booksHead ;
+    while (current !=nullptr) {
+        if (current->ISBN==given_isbn) {
+            return current;
+        } else {
+            current=current->next;
+        }; 
+    };
+    return nullptr;
+};
+
+void removeBook(string given_isbn) {
+    BookNode* current = booksHead;
+    BookNode* prev = nullptr;
+    while (current!=nullptr && current->ISBN!=given_isbn) {
+        prev = current;
+        current=current->next;
+    };
+    while (current==nullptr) {
+        CopyNode* tempCopy = current->copiesHead;
+
+    };
+};
 
 
     void saveToFile(const string& filename){
@@ -138,7 +156,7 @@ return newNode;
             cout << "Couldn't open file." << endl;
             return;
         }
-        BookNode* currentBook = head;
+        BookNode* currentBook = booksHead;
         while (currentBook != nullptr) {
             //εισαγουμε τα στοιχεια του copy μεσα στο file με το format του file
             file << "BOOK|" << currentBook->ISBN << "|" << currentBook->title << "|" << currentBook->author << endl;
@@ -189,13 +207,38 @@ return newNode;
     }
     file.close();
     }
-}
-
+};
 
 int main() {
     Library bookLibrary;
 
     bookLibrary.loadFromFile("library.txt");
+
+    //menu και λειτουργια επιλογων
+    bool exit = false; 
+    while (exit==false) {
+        cout<<"====== ΒΙΒΛΙΟΘΗΚΗ - ΚΕΝΤΡΙΚΟ MENU ======\n";
+        cout<<"  1. Φόρτωση βιβλιοθήκης από αρχείο\n";
+        cout<<"  2. Αποθήκευση βιβλιοθήκης σε αρχείο\n";
+        cout<<"  3. Εμφάνιση όλων των βιβλίων\n";
+        cout<<"  4. Αναζήτηση βιβλίου (με ISBN)\n";
+        cout<<"  5. Προσθήκη νέου βιβλίου\n";
+        cout<<"  6. Διαγραφή βιβλίου\n";
+        cout<<"  7. Προσθήκη αντιτύπου σε βιβλίο\n";
+        cout<<"  8. Διαγραφή αντιτύπου από βιβλίο\n";
+        cout<<"  9. Δανεισμός αντιτύπου\n";
+        cout<<"  10. Επιστροφή αντιτύπου\n";
+        cout<<"  11. Εμφάνιση διαθέσιμων αντιτύπων βιβλίου\n";
+        cout<<"  0. Έξοδος\n";
+        cout<<"=========================================\n";
+        cout<<"Παρακαλώ διαλέξετε μία από τις παραπάνω επιλογές: ";
+        int menu_choice;
+        cin >> menu_choice;
+        switch (menu_choice){
+            case  1:
+            
+        };
+    };
 
     return 0;
 }
