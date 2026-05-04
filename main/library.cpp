@@ -108,21 +108,21 @@ class BookNode{
             if (copyID==current->copyID) {
                 if (current->status!="borrowed") {
                     if (current->status=="available") {
-                        cout<<"Το αντίτυπο με κωδικό: "<<copyID<<" έχει κατάσταση available. Η επιστροφή απέτυχε."<<endl;
+                        cout<<"The copy with ID: "<<copyID<<" has status available. The return failed."<<endl;
                     }
                     else {
-                        cout<<"Το αντίτυπο με κωδικό: "<<copyID<<" έχει κατάσταση damaged. Η επιστροφή απέτυχε."<<endl;
+                        cout<<"The copy with ID: "<<copyID<<" has status damaged. The return failed."<<endl;
                     };
                     break;
                 }
                 else {
                     if (isDamaged==1) {
                         current->status="damaged";
-                        cout<<"Η επιστροφή του αντιτύπου εκτελέστηκε με επιτυχία. Το αντίτυπο με κωδικό: "<<copyID<<" έχει κατάσταση  damaged."<<endl;
+                        cout<<"The copy return was successful. The copy with ID: "<<copyID<<" has status damaged."<<endl;
                     }
                     else {
                         current->status ="available";
-                        cout<<"Η επιστροφή του αντιτύπου εκτελέστηκε με επιτυχία. Το αντίτυπο με κωδικό: "<<copyID<<" έχει κατάσταση  available."<<endl;
+                        cout<<"The copy return was successful. The copy with ID: "<<copyID<<" has status available."<<endl;
                     };
                     break;  
                 };
@@ -243,7 +243,7 @@ class Library {
     //ορισμός και δόμηση της priintAll
     void printAll() {
         BookNode* current = booksHead;//εισαγωγή τίτλων για ευκολότερη ανάγνωση
-        cout << "Τίτλος | Συγγραφέας | ISBN | Διαθέσιμα Αντίτυπα | Συνολικά Αντίτυπα " << endl;
+        cout << "Title | Author | ISBN | Available Copies | Total Copies " << endl;
         cout << "====================================================================" << endl;  
         while (current!=nullptr) {//προσπέλαση όλων των βιβλίων της LOB και εκτύπωση αυτών
             cout <<current->title<<" | "<<current->author<<" | "<<current->ISBN<<" | "<<current->countAvailable()<<" | "<<current->countCopies()<<endl;
@@ -274,7 +274,7 @@ class Library {
     void loadFromFile(const string& filename){ 
         ifstream file(filename);
         if (!file.is_open()){
-            cout<< "the file cant be opened"<<endl;
+            cout<< "The file can't be opened."<<endl;
             return;
         };
         string line;
@@ -300,7 +300,7 @@ class Library {
 };
 //απλή συνάρτηση για ευκολότερο navigation στο menu και την αποφυγή του repeated code
 void continuity() { 
-    cout<<"Πατήστε οποιδήποτε πλήκτρο για να επιστρέψετε στο menu."<<endl;
+    cout<<"Press any key to return to the menu."<<endl;
     _getch();
 };
 
@@ -310,21 +310,21 @@ int main() {
     //menu και λειτουργίες επιλογών
     bool exit = false; 
     while (exit==false) {
-        cout<<"====== ΒΙΒΛΙΟΘΗΚΗ - ΚΕΝΤΡΙΚΟ MENU ======\n";
-        cout<<"  1. Φόρτωση βιβλιοθήκης από αρχείο\n";
-        cout<<"  2. Αποθήκευση βιβλιοθήκης σε αρχείο\n";
-        cout<<"  3. Εμφάνιση όλων των βιβλίων\n";
-        cout<<"  4. Αναζήτηση βιβλίου (με ISBN)\n";
-        cout<<"  5. Προσθήκη νέου βιβλίου\n";
-        cout<<"  6. Διαγραφή βιβλίου\n";
-        cout<<"  7. Προσθήκη αντιτύπου σε βιβλίο\n";
-        cout<<"  8. Διαγραφή αντιτύπου από βιβλίο\n";
-        cout<<"  9. Δανεισμός αντιτύπου\n";
-        cout<<"  10. Επιστροφή αντιτύπου\n";
-        cout<<"  11. Εμφάνιση διαθέσιμων αντιτύπων βιβλίου\n";
-        cout<<"  0. Έξοδος\n";
+        cout<<"====== LIBRARY - MAIN MENU ======\n";
+        cout<<"  1. Load library from file\n";
+        cout<<"  2. Save library to file\n";
+        cout<<"  3. Display all books\n";
+        cout<<"  4. Search book (by ISBN)\n";
+        cout<<"  5. Add new book\n";
+        cout<<"  6. Delete book\n";
+        cout<<"  7. Add copy to book\n";
+        cout<<"  8. Remove copy from book\n";
+        cout<<"  9. Borrow copy\n";
+        cout<<"  10. Return copy\n";
+        cout<<"  11. Show available copies of book\n";
+        cout<<"  0. Exit\n";
         cout<<"=========================================\n";
-        cout<<"Παρακαλώ διαλέξετε μία από τις παραπάνω επιλογές: \n";
+        cout<<"Please choose one of the options above:\n";
         int menu_choice;
         cin >> menu_choice;
         while (menu_choice<0 || menu_choice>11) {
@@ -335,7 +335,7 @@ int main() {
         switch (menu_choice) {
             case 1: {
                 if (bookLibrary.booksHead!=nullptr) {
-                    cout<<"Υπάρχει ήδη μία βιβλιοθήκη φορτωμένη, θέλετε να φορτώσετε μία καινούρια; (Τα δεδομένα της παλιάς θα διαγραφούν) [YES]/[NO]"<<endl;//warning για τον χρήστη
+                    cout<<"A library is already loaded. Do you want to load a new one? (Old data will be deleted) [YES]/[NO]"<<endl;//warning για τον χρήστη
                     string ans;
                     getline(cin,ans);
                     while (ans!="YES" && ans!="NO") {//ansswer validation check
@@ -346,10 +346,10 @@ int main() {
                         bookLibrary.~Library();//διαγραφή όλων των δεδομένων της βιβλιοθήκης για δυναμική εκκαθάριση μνήμης συμπεριλαμβανομένου και του αντικειμένου
                         new (&bookLibrary) Library();//δημιουργία νέου αντικειμένου στη διεύθυνση του προηγούμενου (για εκμετάλλευση κοινής μνήμης και την αποφυγή double pointer/floating pointers)
                         bookLibrary.loadFromFile("library.txt");//333-334 απλή φόρτωση νέας βιβλιοθήκης και διευκόλυνση στο navigation
-                        cout<<"Φόρτωση νέας βιβλιοθήκης επιτυχής."<<endl<<"Επιστροφή στο κεντρικό menu."<<endl;
+                        cout<<"New library loaded successfully."<<endl<<"Returning to the main menu."<<endl;
                     } 
                     else {
-                        cout<<"Επιστροφή στο κεντρικό menu."<<endl;
+                        cout<<"Returning to the main menu."<<endl;
                     };
                 };  
                 break;
@@ -357,8 +357,8 @@ int main() {
             case 2: {
                 if (bookLibrary.booksHead!=nullptr) {//έλεγχος περίπτωσης άδειας βιβλιοθήκης
                     bookLibrary.saveToFile("library.txt");//359-360 απλή αποθήκευση στο ήδη υπάρχον txt
-                    cout <<"Αποθήκευση βιβλιοθήκης επιτυχής."<<endl;
-                    cout <<"Θέλετε να επιστρέψετε στο κεντρικό menu ή να πραγματοποιηθεί έξοδος; [MENU]/[EXIT]"<<endl;//διευκόληνση του navigation
+                    cout <<"Library saved successfully."<<endl;
+                    cout <<"Do you want to return to the main menu or exit? [MENU]/[EXIT]"<<endl;//διευκόληνση του navigation
                     string ans;
                     getline(cin,ans);
                     while (ans!="MENU" && ans!="EXIT") {//answer vaidation check
@@ -366,11 +366,11 @@ int main() {
                         getline(cin,ans);
                     };
                     if (ans=="EXIT")  {
-                        cout<<"Καλή συνέχεια!"<<endl;
+                        cout<<"Goodbye!"<<endl;
                         exit = true;
                     }
                     else {
-                        cout<<"Επιστροφή στο κεντρικό menu."<<endl;
+                        cout<<"Returning to the main menu."<<endl;
                     };
                 };
                 break;
@@ -384,19 +384,19 @@ int main() {
             };
             case 4: {
                 string input_isbn;
-                cout <<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) που αναζητάτε.Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x):"<<endl;      
+                cout <<"Please enter the ISBN of the book you are searching for. The code should have the form (xxx-xxx-xx-xxxx-x):"<<endl;      
                 cin>>input_isbn;
                 cin.ignore();
                 BookNode* finder = bookLibrary.findBook(input_isbn);//έλεγχος ύπαρξης βιβλίου
                 if (finder!=nullptr) {
                     CopyNode* current_copy = finder->copiesHead;//προσπέλαση της LOC του βιβλίου με input_isb και εκτύπωση πλήρης λίστας αντιτύπων του βιβλίου
-                    cout <<"Το βιβλίο και τα αντίτυπα σχετικά με τον κωδικό "<<input_isbn<<" ειναι τα εξής:"<<endl;
+                    cout <<"The book and copies for ISBN "<<input_isbn<<" are as follows:"<<endl;
                     cout<<"--------------------------------------------------"<<endl;
-                    cout<<"ΕΙΔΟΣ | ΚΩΔΙΚΟΣ ΒΙΒΛΙΟΥ ISBN | ΤΙΤΛΟΣ | ΣΥΓΓΡΑΦΕΑΣ"<<endl;
+                    cout<<"TYPE | BOOK ISBN | TITLE | AUTHOR"<<endl;
                     cout<<"=================================================="<<endl;
                     cout <<"BOOK | "<<finder->ISBN<<" | "<<finder->title<<" | "<<finder->author<<endl;
                     cout<<"--------------------------------------------------"<<endl;
-                    cout<<"ΕΙΔΟΣ | ΚΩΔΙΚΟΣ ΑΝΤΙΤΥΠΟΥ COPYID | ΚΑΤΑΣΤΑΣΗ"<<endl;
+                    cout<<"TYPE | COPY ID | STATUS"<<endl;
                     cout<<"============================================"<<endl;
                     while (current_copy!=nullptr) {
                         cout<<"COPY"<<" | "<<current_copy->copyID<<" | "<<current_copy->status<<endl;
@@ -404,35 +404,35 @@ int main() {
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<input_isbn<<" δεν βρέθηκε."<<endl;
+                    cout<<"The book with ISBN: "<<input_isbn<<" was not found."<<endl;
                 };
                 continuity();
                 break;
             };
             case 5: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) που θέλετε να προσθέσετε. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x):"<<endl;
+                cout<<"Please enter the ISBN of the book you want to add. The code should have the form (xxx-xxx-xx-xxxx-x):"<<endl;
                 string new_isbn;
                 cin>>new_isbn;
                 cin.ignore();
                 BookNode* check_ISBN=bookLibrary.findBook(new_isbn); //έλεγχος περίπτωσης ύπαρξης βιβλίου με ίδιο ISBN με την νέα προσθήκη
                 if (check_ISBN==nullptr) {
-                    cout<<"Παρακαλώ εισάγετε τον τίτλο του βιβλίου:"<<endl;//εισαγωγή νέων στοιχείων βιβλίου
+                    cout<<"Please enter the book title:"<<endl;//εισαγωγή νέων στοιχείων βιβλίου
                     string new_title;
                     getline(cin,new_title);
-                    cout<<"Παρακαλώ εισάγετε τον συγγραφέα του βιβλίου:"<<endl;
+                    cout<<"Please enter the book author:"<<endl;
                     string new_author;
                     getline(cin,new_author);
                     bookLibrary.addBook(new_title,new_author,new_isbn);
-                    cout<<"Το βιβλίο προστέθηκε επιτυχώς."<<endl;
+                    cout<<"The book was added successfully."<<endl;
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<new_isbn<<" υπάρχει ήδη στην βιβλιοθήκη. Η προσθήκη βιβλίου ακυρώνεται."<<endl;
+                    cout<<"The book with ISBN: "<<new_isbn<<" already exists in the library. Adding the book is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 6: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) που θέλετε να διαγράψετε. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x):  "<<endl;
+                cout<<"Please enter the ISBN of the book you want to delete. The code should have the form (xxx-xxx-xx-xxxx-x):  "<<endl;
                 string delete_isbn;
                 cin>>delete_isbn;
                 cin.ignore();
@@ -448,54 +448,54 @@ int main() {
                         check_borrowed=check_borrowed->next;
                     };
                     if (check_ans) {
-                        cout<<"Υπάρχει αντίτυπο με κατάσταση borrowed, η διαγραφή βιβλίου ακυρώνεται."<<endl;
+                        cout<<"There is a copy with status borrowed; deleting the book is cancelled."<<endl;
                     }
                     else {
                         bookLibrary.removeBook(delete_isbn); //διαγραφή βιβλίου
-                        cout<<"Το βιβλίο με κωδικό: "<<delete_isbn<<" διαγράφτηκε επιτυχώς μαζί με τα αντίτυπα του."<<endl;
+                        cout<<"The book with ISBN: "<<delete_isbn<<" was deleted successfully along with its copies."<<endl;
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<delete_isbn<<" δεν υπάρχει. Η διαγραφή βιβλίου ακυρωνεται."<<endl;
+                    cout<<"The book with ISBN: "<<delete_isbn<<" does not exist. Deleting the book is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 7: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) στο οποίο θέλετε να προσθέσετε αντίτυπο. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x): "<<endl;
+                cout<<"Please enter the ISBN of the book to which you want to add a copy. The code should have the form (xxx-xxx-xx-xxxx-x): "<<endl;
                 string new_copy_isbn;
                 cin>>new_copy_isbn;
                 cin.ignore();
                 BookNode* check_ISBN=bookLibrary.findBook(new_copy_isbn);//έλεγχος ύπαρξης βιβλίου
                 if (check_ISBN!=nullptr) {
-                    cout<<"Παρακαλώ εισάγετε τον κωδικό αντιτύπου (CopyID). Ο κωδικός να είναι της μορφής (x): "<<endl;
+                    cout<<"Please enter the copy ID. The code should have the form (x): "<<endl;
                     int new_copyid;
                     cin>>new_copyid;
                     cin.ignore();
                     CopyNode* current_copy = check_ISBN->copiesHead;
                     bool ans = check_ISBN->findCopy(new_copyid); //εύρεση αντιτύπου
                     if (ans) {
-                        cout<<"Υπάρχει ήδη αντίτυπο με κωδικό: "<<new_copyid<<". Η προσθήκη αντιτύπου ακυρώνεται."<<endl;
+                        cout<<"There is already a copy with ID: "<<new_copyid<<". Adding the copy is cancelled."<<endl;
                     }    
                     else {
                         check_ISBN->addCopy(new_copyid); //προσθήκη νέου αντιτύπου
-                        cout<<"Το αντίτυπο με κωδικό: "<<new_copyid<<" προστέθηκε επιτυχώς."<<endl;
+                        cout<<"The copy with ID: "<<new_copyid<<" was added successfully."<<endl;
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<new_copy_isbn<<" δεν υπάρχει. Η προσθήκη αντιτύπου ακυρώνεται."<<endl;
+                    cout<<"The book with ISBN: "<<new_copy_isbn<<" does not exist. Adding the copy is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 8: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) στο οποίο θέλετε να διαγράψετε αντίτυπο. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x): "<<endl;
+                cout<<"Please enter the ISBN of the book from which you want to remove a copy. The code should have the form (xxx-xxx-xx-xxxx-x): "<<endl;
                 string remove_copy_isbn;
                 cin>>remove_copy_isbn;
                 cin.ignore();
                 BookNode* check_ISBN=bookLibrary.findBook(remove_copy_isbn); //έλεγχος ύπαρξης βιβλίου
                 if (check_ISBN!=nullptr) {
-                    cout<<"Παρακαλώ εισάγετε τον κωδικό αντιτύπου (CopyID) που θέλετε να διαγράψετε. Ο κωδικός να είναι της μορφής (x): "<<endl;
+                    cout<<"Please enter the copy ID you want to remove. The code should have the form (x): "<<endl;
                     int remove_copyid;
                     cin>>remove_copyid;
                     cin.ignore();
@@ -506,11 +506,11 @@ int main() {
                             exist = true;
                             if (check_borrowed->status!="borrowed") { //περίπτωση όχι borrowed διαγραφή αντιτύπου 
                                 check_ISBN->removeCopy(remove_copyid);
-                                cout<<"Η διαγραφή αντιτύπου με κωδικό: "<<remove_copyid<<" ολοκληρώθηκε επιτυχώς."<<endl;
+                                cout<<"The copy with ID: "<<remove_copyid<<" was removed successfully."<<endl;
                                 break;
                             }
                             else { //περίπτωση borrowed , ακύρωση διαγραφής
-                                cout<<"Το αντίτυπο με κωδικό: "<<remove_copyid<<" έχει κατάσταση borrowed. Η διαγραφή αντιτύπου ακυρώνεται."<<endl;
+                                cout<<"The copy with ID: "<<remove_copyid<<" has status borrowed. Removing the copy is cancelled."<<endl;
                                 break;
                             };
                         }
@@ -519,56 +519,56 @@ int main() {
                         };
                     };
                     if (exist==false) {
-                        cout <<"Το αντίτυπο με κωδικό: "<<remove_copyid<<" δεν υπάρχει. Η διαγραφή αντιτύπου ακυρώνεται."<<endl;
+                        cout <<"The copy with ID: "<<remove_copyid<<" does not exist. Removing the copy is cancelled."<<endl;
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<remove_copy_isbn<<" δεν υπάρχει. Η διαγραφή αντιτύπου ακυρώνεται."<<endl;
+                    cout<<"The book with ISBN: "<<remove_copy_isbn<<" does not exist. Removing the copy is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 9: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) του οποίου θέλετε να δανειστείτε αντίτυπο. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x): "<<endl;
+                cout<<"Please enter the ISBN of the book for which you want to borrow a copy. The code should have the form (xxx-xxx-xx-xxxx-x): "<<endl;
                 string borrow_copy_isbn;
                 cin>> borrow_copy_isbn;
                 cin.ignore();
                 BookNode* check_ISBN=bookLibrary.findBook(borrow_copy_isbn); //έλεγχος ύπαρξης βιβλίου
                 if (check_ISBN!=nullptr) {
-                    cout<<"Παρακαλώ εισάγετε τον κωδικό αντιτύπου (CopyID) που θέλετε να δανειστείτε. Ο κωδικός να είναι της μορφής (x): "<<endl;
+                    cout<<"Please enter the copy ID you want to borrow. The code should have the form (x): "<<endl;
                     int borrow_copyid;
                     cin>>borrow_copyid;
                     cin.ignore();
                     bool complete = check_ISBN->borrowCopy(borrow_copyid); //δανεισμός βιβλίου με ενσωματωμένη αναζήτηση αντιτύπου
                     if (complete) {
-                        cout<<"Ο δανεισμός αντιτύπου ολοκληρώθηκε με επιτυχία. Η νέα κατάσταση του αντιτύπου με κωδικό: "<<borrow_copyid<<" ορίστηκε σε borrowed."<<endl;
+                        cout<<"Copy borrowing completed successfully. The new status of copy ID: "<<borrow_copyid<<" is borrowed."<<endl;
                         int available_copies = check_ISBN->countAvailable(); //545-546 εύρεση και εκτύπωση διαθέσιμων αντιτύπων με τη βοήθεια της countAvailable
-                        cout <<"Ο ενημερωμένος αριθμός διαθέσιμων αντιτύπων είναι: "<<available_copies<<endl;
+                        cout <<"The updated number of available copies is: "<<available_copies<<endl;
                     }
                     else {
-                        cout<<"Ο δανεισμός αντιτύπου απέτυχε, το αντίτυπο με κωδικό: "<<borrow_copyid<<" δεν έχει κατάσταση available ή δεν υπάρχει."<<endl;
+                        cout<<"Copy borrowing failed. The copy with ID: "<<borrow_copyid<<" is not available or does not exist."<<endl;
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<borrow_copy_isbn<<" δεν υπάρχει. Ο δανεισμός αντιτύπου ακυρώνεται."<<endl;
+                    cout<<"The book with ISBN: "<<borrow_copy_isbn<<" does not exist. Copy borrowing is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 10: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) του οποίου θέλετε να επιστρέψετε αντίτυπο. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x): "<<endl;
+                cout<<"Please enter the ISBN of the book for which you want to return a copy. The code should have the form (xxx-xxx-xx-xxxx-x): "<<endl;
                 string return_copy_isbn;
                 cin>> return_copy_isbn;
                 cin.ignore();
                 BookNode* check_isbn = bookLibrary.findBook(return_copy_isbn); //έλεγχος ύπαρξης βιβλίου
                 if (check_isbn!=nullptr) {
-                    cout<<"Παρακαλώ εισάγετε τον κωδικό (CopyID) του αντιτύπου που θέλετε να επιστρέψετε. Ο κωδικός να είναι της μορφής (x): "<<endl; 
+                    cout<<"Please enter the copy ID of the copy you want to return. The code should have the form (x): "<<endl; 
                     int return_copyid;
                     cin>>return_copyid;
                     cin.ignore();
                     bool check_copyid = check_isbn->findCopy(return_copyid); //έλεγχος ύπαρξης αντιτύπου
                     if (check_copyid) {    
-                        cout<<"Παρακαλώ εισάγετε την κατάσταση του αντιτύπου που επιστρέφετε [1. damaged]/[2. not damaged]"<<endl; //571-578 έλεγχος νέας κατάστασης
+                        cout<<"Please enter the condition of the copy you are returning [1. damaged]/[2. not damaged]"<<endl; //571-578 έλεγχος νέας κατάστασης
                         int is_damaged;
                         cin>>is_damaged;
                         while (is_damaged!=1 && is_damaged!=2) { // validation check
@@ -579,43 +579,43 @@ int main() {
                         check_isbn->returnCopy(return_copyid,is_damaged);//χρήση της returnCopy για την ενημέρωση της LOC και συγκεκριμένα του copy με return_copyid
                     }
                     else {
-                        cout<<"Το αντίτυπο με κωδικό: "<<return_copyid<<" δεν υπάρχει. Η επιστροφή αντιτύπου ακυρώνεται."<<endl;
+                        cout<<"The copy with ID: "<<return_copyid<<" does not exist. The return is cancelled."<<endl;
                     };
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<return_copy_isbn<<" δεν υπάρχει. Η επιστροφή ακυρώνεται."<<endl;
+                    cout<<"The book with ISBN: "<<return_copy_isbn<<" does not exist. The return is cancelled."<<endl;
                 };
                 continuity();
                 break;
             };
             case 11: {
-                cout<<"Παρακαλώ εισάγετε τον κωδικό του βιβλίου (ISBN) του οποίου θέλετε να δείτε τα διαθέσιμα αντίτυπα. Ο κωδικός να είναι της μορφής (xxx-xxx-xx-xxxx-x): "<<endl;
+                cout<<"Please enter the ISBN of the book for which you want to see available copies. The code should have the form (xxx-xxx-xx-xxxx-x): "<<endl;
                 string avail_copies;
                 cin>> avail_copies;
                 cin.ignore();
                 BookNode* check_isbn = bookLibrary.findBook(avail_copies); //έλεγχος ύπαρξης βιβλίου
                 if (check_isbn!=nullptr) {
                     CopyNode* current_copy = check_isbn->copiesHead;
-                    while (current_copy!=nullptr) { //599-607 προσπέλαση LOC του βιβλίου με κωδικό avail_copies για εκτύπωση διαθέσιμων του αντιτύπων           
+                    cout<<"TYPE | COPY ID | STATUS"<<endl;
+                    cout<<"============================================"<<endl;
+                    while (current_copy!=nullptr) { //597-605 προσπέλαση LOC του βιβλίου με κωδικό avail_copies για εκτύπωση διαθέσιμων του αντιτύπων           
                         if (current_copy->status=="available") {
-                            cout<<"ΕΙΔΟΣ | ΚΩΔΙΚΟΣ ΑΝΤΙΤΥΠΟΥ COPYID | ΚΑΤΑΣΤΑΣΗ"<<endl;
-                            cout<<"============================================"<<endl;
                             cout<<"COPY | "<<current_copy->copyID<<" | "<<current_copy->status<<endl;
                             cout<<"---------------------------------------------"<<endl;
                         };
                         current_copy=current_copy->next;
                     };
-                    cout<<"Συνολικά  αντίτυπα με κατάσταση available: "<<check_isbn->countAvailable()<<endl;
+                    cout<<"Total copies with status available: "<<check_isbn->countAvailable()<<endl;
                 }
                 else {
-                    cout<<"Το βιβλίο με κωδικό: "<<avail_copies<<"  δεν υπάρχει. Η εκτύπωση διαθέσιμων αντιτύπων απέτυχε."<<endl;
+                    cout<<"The book with ISBN: "<<avail_copies<<" does not exist. Printing available copies failed."<<endl;
                 };
                 continuity();
                 break;
             };
             case 0: {
                 string ans;
-                cout<<"Θέλετε να πραγματοποιήσετε αποθήκευση πριν την έξοδο σας; [YES]/[NO]"<<endl;
+                cout<<"Do you want to save before exiting? [YES]/[NO]"<<endl;
                 getline(cin,ans);
                 while (ans!="YES" && ans!="NO") { //input validation
                     cout <<"Please type a valid answer."<<endl;
@@ -624,7 +624,7 @@ int main() {
                 if (ans=="YES")  { //αν ans=="yes" πρώτα αποθήκευση και μετά έξοδος αλλιώς απλά έξοδος
                     bookLibrary.saveToFile("library.txt");
                 };
-                cout<<"Καλή συνέχεια!"<<endl;
+                cout<<"Goodbye!"<<endl;
                 exit = true;
                 break;
             };
